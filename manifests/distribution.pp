@@ -48,7 +48,7 @@ define reprepro::distribution (
   $architectures,
   $components,
   $description,
-  $sign_with,
+  $sign_with='',
   $ensure=present,
   $deb_indices='Packages Release .gz .bz2',
   $dsc_indices='Sources Release .gz .bz2',

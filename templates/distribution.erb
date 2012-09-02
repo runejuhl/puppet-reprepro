@@ -7,7 +7,9 @@ Components: <%= components %>
 Description: <%= description %>
 DebIndices: <%= deb_indices %>
 DscIndices: <%= dsc_indices %>
+<% if sign_with != "" -%>
 SignWith: <%= sign_with %>
+<% end -%>
 <% if uploaders != "" -%>
 Uploaders: <%= uploaders -%> 
 <% end -%>
