@@ -13,7 +13,7 @@ class reprepro::debian {
   case $::lsbdistcodename {
     squeeze: {
       package {'reprepro':
-        ensure => 'latest';
+        ensure => 'installed';
       }
 
       group {'reprepro':
