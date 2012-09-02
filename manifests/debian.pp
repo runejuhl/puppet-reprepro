@@ -24,7 +24,7 @@ class reprepro::debian {
         ensure  => 'present',
         home    => $reprepro::params::basedir,
         shell   => '/bin/bash',
-        comment => 'reprepro base directory',
+        comment => "Reprepro repository owner",
         gid     => 'reprepro',
         require => Group['reprepro'],
       }
