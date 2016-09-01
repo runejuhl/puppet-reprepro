@@ -73,7 +73,6 @@ define reprepro::distribution (
 ) {
 
   include reprepro::params
-  include concat::setup
 
   $notify = $ensure ? {
     'present' => Exec["export distribution ${name}"],
