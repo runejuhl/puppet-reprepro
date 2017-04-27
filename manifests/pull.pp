@@ -31,6 +31,7 @@
 define reprepro::pull (
   $repository,
   $from,
+  $ensure          = 'present',
   $basedir         = $::reprepro::basedir,
   $components      = '',
   $architectures   = '',
