@@ -80,6 +80,7 @@ define reprepro::distribution (
   $create_filterlist      = {},
 ) {
 
+  require reprepro
   include reprepro::params
 
   # create update and pull resources:
