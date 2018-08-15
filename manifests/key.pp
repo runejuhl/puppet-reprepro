@@ -10,21 +10,41 @@
 #    /var/packages.
 #
 define reprepro::key (
-  $key_source,
-  $homedir    = $::reprepro::homedir,
+  $key_source  = '',
+  $key_content = '',
+  $homedir     = $::reprepro::homedir,
 ) {
 
   include reprepro::params
 
   $keypath = "${homedir}/.gnupg/${name}"
-  file {$keypath:
-    ensure  => 'present',
-    owner   => $::reprepro::user_name,
-    group   => $::reprepro::group_name,
-    mode    => '0660',
-    source  => $key_source,
-    require => User[$::reprepro::user_name],
-    notify  => Exec["import-${name}"],
+
+  if $key_source == $key_content {
+    fail('You have to specify key_source or key_content')
+  }
+ 
+  if $key_source != '' {
+    file {$keypath:
+      ensure  => 'present',
+      owner   => $::reprepro::user_name,
+      group   => $::reprepro::group_name,
+      mode    => '0660',
+      source  => $key_source,
+      require => User[$::reprepro::user_name],
+      notify  => Exec["import-${name}"],
+    }
+  }
+
+  if $key_content != '' {
+    file {$keypath:
+      ensure  => 'present',
+      owner   => $::reprepro::user_name,
+      group   => $::reprepro::group_name,
+      mode    => '0660',
+      content => $key_content,
+      require => User[$::reprepro::user_name],
+      notify  => Exec["import-${name}"],
+    }
   }
 
   exec {"import-${name}":
