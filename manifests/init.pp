@@ -6,17 +6,21 @@
 #
 #   - *basedir*: The base directory to house the repository.
 #   - *homedir*: The home directory of the reprepro user.
+#   - *keys*   : hash to create reprepro::key resources.
+#   - *key_defaults* : hash with defaults for keys creation.
 #
 # === Example
 #
 #   class { 'reprepro': }
 #
 class reprepro (
-  $basedir     = $::reprepro::params::basedir,
-  $homedir     = $::reprepro::params::homedir,
-  $manage_user = true,
-  $user_name   = $::reprepro::params::user_name,
-  $group_name  = $::reprepro::params::group_name,
+  $basedir      = $::reprepro::params::basedir,
+  $homedir      = $::reprepro::params::homedir,
+  $manage_user  = true,
+  $user_name    = $::reprepro::params::user_name,
+  $group_name   = $::reprepro::params::group_name,
+  $keys         = {},
+  $key_defaults = {},
 ) inherits reprepro::params {
   validate_bool($manage_user)
 
@@ -79,6 +83,8 @@ class reprepro (
     owner   => $user_name,
     group   => $group_name,
   }
+
+  create_resources('::reprepro::key', $keys, $key_defaults)
 
 }
 
