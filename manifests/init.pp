@@ -78,7 +78,7 @@ class reprepro (
     group  => $group_name,
   }
 
-  -> file { "${homedir}/bin/update-distribution.sh":
+  file { "${homedir}/bin/update-distribution.sh":
     ensure  => file,
     mode    => '0755',
     content => template('reprepro/update-distribution.sh.erb'),
@@ -87,6 +87,4 @@ class reprepro (
   }
 
   create_resources('::reprepro::key', $keys, $key_defaults)
-
 }
-

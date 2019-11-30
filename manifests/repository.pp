@@ -39,7 +39,7 @@ define reprepro::repository (
   String  $group           = 'reprepro',
   Array   $options         = ['verbose', 'ask-passphrase', 'basedir .'],
   Boolean $createsymlinks  = false,
-  ) {
+) {
 
 # lint:ignore:selector_inside_resource
   file { "${basedir}/${name}":
@@ -66,67 +66,59 @@ define reprepro::repository (
 # lint:endignore
 
   file { "${basedir}/${name}/dists":
-    ensure  => directory,
-    mode    => '2755',
-    owner   => $owner,
-    group   => $group,
-    require => File["${basedir}/${name}"],
+    ensure => directory,
+    mode   => '2755',
+    owner  => $owner,
+    group  => $group,
   }
 
   file { "${basedir}/${name}/pool":
-    ensure  => directory,
-    mode    => '2755',
-    owner   => $owner,
-    group   => $group,
-    require => File["${basedir}/${name}"],
+    ensure => directory,
+    mode   => '2755',
+    owner  => $owner,
+    group  => $group,
   }
 
   file { "${basedir}/${name}/conf":
-    ensure  => directory,
-    mode    => '2755',
-    owner   => $owner,
-    group   => $group,
-    require => File["${basedir}/${name}"],
+    ensure => directory,
+    mode   => '2755',
+    owner  => $owner,
+    group  => $group,
   }
 
   file { "${basedir}/${name}/lists":
-    ensure  => directory,
-    mode    => '2755',
-    owner   => $owner,
-    group   => $group,
-    require => File["${basedir}/${name}"],
+    ensure => directory,
+    mode   => '2755',
+    owner  => $owner,
+    group  => $group,
   }
 
   file { "${basedir}/${name}/db":
-    ensure  => directory,
-    mode    => '2755',
-    owner   => $owner,
-    group   => $group,
-    require => File["${basedir}/${name}"],
+    ensure => directory,
+    mode   => '2755',
+    owner  => $owner,
+    group  => $group,
   }
 
   file { "${basedir}/${name}/logs":
-    ensure  => directory,
-    mode    => '2755',
-    owner   => $owner,
-    group   => $group,
-    require => File["${basedir}/${name}"],
+    ensure => directory,
+    mode   => '2755',
+    owner  => $owner,
+    group  => $group,
   }
 
   file { "${basedir}/${name}/tmp":
-    ensure  => directory,
-    mode    => '2755',
-    owner   => $owner,
-    group   => $group,
-    require => File["${basedir}/${name}"],
+    ensure => directory,
+    mode   => '2755',
+    owner  => $owner,
+    group  => $group,
   }
 
   file { "${basedir}/${name}/incoming":
-    ensure  => directory,
-    mode    => '2775',
-    owner   => $owner,
-    group   => $group,
-    require => File["${basedir}/${name}"],
+    ensure => directory,
+    mode   => '2775',
+    owner  => $owner,
+    group  => $group,
   }
 
   file { "${basedir}/${name}/conf/options":
@@ -135,7 +127,6 @@ define reprepro::repository (
     owner   => $owner,
     group   => $group,
     content => inline_template("<%= @options.join(\"\n\") %>\n"),
-    require => File["${basedir}/${name}/conf"],
   }
 
   file { "${basedir}/${name}/conf/incoming":
@@ -144,14 +135,12 @@ define reprepro::repository (
     owner   => $owner,
     group   => $group,
     content => template('reprepro/incoming.erb'),
-    require => File["${basedir}/${name}/conf"],
   }
 
   concat { "${basedir}/${name}/conf/distributions":
-    owner   => $owner,
-    group   => $group,
-    mode    => '0640',
-    require => File["${basedir}/${name}/conf"],
+    owner => $owner,
+    group => $group,
+    mode  => '0640',
   }
 
   concat::fragment { "00-distributions-${name}":
@@ -160,10 +149,9 @@ define reprepro::repository (
   }
 
   concat { "${basedir}/${name}/conf/updates":
-    owner   => $owner,
-    group   => $group,
-    mode    => '0640',
-    require => File["${basedir}/${name}/conf"],
+    owner => $owner,
+    group => $group,
+    mode  => '0640',
   }
 
   concat::fragment { "00-update-${name}":
@@ -172,10 +160,9 @@ define reprepro::repository (
   }
 
   concat {"${basedir}/${name}/conf/pulls":
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    require => File["${basedir}/${name}/conf"],
+    owner => root,
+    group => root,
+    mode  => '0644',
   }
 
   concat::fragment { "00-pulls-${name}":
