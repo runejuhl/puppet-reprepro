@@ -1,17 +1,24 @@
-# == Class: reprepro
 #
-#   Configures reprepro on a server
+# Configures reprepro on a server
 #
-# === Parameters
-#
-#   - *basedir*: The base directory to house the repository.
-#   - *homedir*: The home directory of the reprepro user.
-#   - *keys*   : hash to create reprepro::key resources.
-#   - *key_defaults* : hash with defaults for keys creation.
-#
-# === Example
-#
-#   class { 'reprepro': }
+# @param basedir
+#   The base directory to house the repository.
+# @param homedir
+#   The home directory of the reprepro user.
+# @param manage_user
+#   if true, creates the user $user_name
+# @param user_name
+#   user_name who own reprepro
+# @param group_name
+#   group of user who own reprepro
+# @param keys
+#   hash to create reprepro::key resources.
+# @param key_defaults
+#   hash with defaults for keys creation.
+# @param package_ensure
+#   what to ensure for packages
+# @param package_name
+#   name of the package to install
 #
 class reprepro (
   String  $basedir        = '/var/packages',

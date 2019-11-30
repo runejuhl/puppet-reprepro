@@ -1,26 +1,31 @@
-# == Definition: reprepro::pull
 #
 # Add a repository pull rule.
 #
-# Parameters:
-# - *name*: the name of the pull rule to use in the Pull
+# @param name
+#   the name of the pull rule to use in the Pull
 #   field in conf/distributions
-# - *repository*: the local repository to pull to
-# - *from*: The codename of the distribution to pull packages from.
-# - *components*: The components of the distribution to get from.
-# - *architectures*: The architectures to update.
-# - *udebcomponents*: Like Components but for the udebs.
-# - *filter_action*: default action when something is not found in the list
-# - *filter_name*: a list of filenames in the format of dpkg --get-selections
-# - *filter_src_list: FilterSrcList parameter
-# - *filter_formula*: FilterFormula
-# - *basedir*: basedir for installation
+# @param repository
+#   the local repository to pull to
+# @param from
+#   The codename of the distribution to pull packages from.
+# @param components
+#   The components of the distribution to get from.
+# @param architectures
+#   The architectures to update.
+# @param udebcomponents
+#   Like Components but for the udebs.
+# @param filter_action
+#   default action when something is not found in the list
+# @param filter_name
+#   a list of filenames in the format of dpkg --get-selections
+# @param filter_src_name
+#   FilterSrcList parameter
+# @param filter_formula
+#   FilterFormula
+# @param basedir
+#   basedir for installation
 #
-# Requires:
-# - Class['reprepro']
-#
-# Example usage:
-#
+# @example
 #   reprepro::pull {'lenny-backports':
 #     repository  => 'localpkgs',
 #     from        => 'dev',

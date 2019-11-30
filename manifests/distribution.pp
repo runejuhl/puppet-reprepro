@@ -1,42 +1,66 @@
-# == Definition: reprepro::distribution
 #
 # Adds a "Distribution" to manage.
 #
-# === Parameters
+# @param basedir
+#   reprepro basedir
+# @param repository
+#   the name of the distribution
+# @param origin
+#   package origin
+# @param label
+#   package label
+# @param suite
+#   package suite
+# @param architectures
+#   available architectures
+# @param components
+#   available components
+# @param description
+#   a short description
+# @param sign_with
+#   email of the gpg key
+# @param codename
+#   codename (defaults to $name)
+# @param basedir
+#   the basedir
+# @param homedir
+#   the homedir
+# @param fakecomponentprefix
+#   fakecomponentprefix
+# @param udebcomponents
+#   udebcomponents
+# @param deb_indices
+#   file name and compression
+# @param dsc_indices
+#   file name and compression
+# @param update
+#   update policy name
+# @param pull
+#   pull policy name
+# @param uploaders
+#   who is allowed to upload packages
+# @param snapshots
+#   create a reprepro snapshot on each update
+# @param install_cron 
+#   install cron job to automatically include new packages
+# @param not_automatic
+#   automatic pined to 1 by using NotAutomatic,
+#   value are "yes" or "no"
+# @param but_automatic_upgrades
+#   set ButAutomaticUpgrades,
+#   value are "yes" or "no"
+# @param log
+#   log
+# @param create_pull
+#   hash to create reprepro::pull resource
+#   the name will be appended to $pull
+# @param create_update
+#   hash to create reprepro::update resource
+#   the name will be appended to $update
+# @param create_filterlist
+#   hash to create reprerpo::filterlist resource
 #
-#   - *ensure* present/absent, defaults to present
-#   - *basedir* reprepro basedir
-#   - *repository*: the name of the distribution
-#   - *origin*: package origin
-#   - *label*: package label
-#   - *suite*: package suite
-#   - *architectures*: available architectures
-#   - *components*: available components
-#   - *description*: a short description
-#   - *sign_with*: email of the gpg key
-#   - *deb_indices*: file name and compression
-#   - *dsc_indices*: file name and compression
-#   - *update*: update policy name
-#   - *pull*: pull policy name
-#   - *uploaders*: who is allowed to upload packages
-#   - *snapshots*: create a reprepro snapshot on each update
-#   - *install_cron*: install cron job to automatically include new packages
-#   - *not_automatic*: automatic pined to 1 by using NotAutomatic,
-#                      value are "yes" or "no"
-#   - *but_automatic_upgrades*: set ButAutomaticUpgrades,
-#                      value are "yes" or "no"
-#   - *create_pull*:       hash to create reprepro::pull resource
-#                          the name will be appended to $pull
-#   - *create_update*:     hash to create reprepro::update resource
-#                          the name will be appended to $update
-#   - *create_filterlist*: hash to create reprerpo::filterlist resource
-#
-# === Requires
-#
-#   - Class["reprepro"]
-#
-# === Example
-#
+# @example
 #   reprepro::distribution {"lenny":
 #     repository    => "my-repository",
 #     origin        => "Camptocamp",

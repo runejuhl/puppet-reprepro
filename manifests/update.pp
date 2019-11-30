@@ -1,29 +1,45 @@
-# == Definition: reprepro::update
 #
-#   Adds a packages repository.
+# Adds a packages repository.
 #
-# === Parameters
+# @param name
+#   the name of the update-upstream use in the
+#   Update field in conf/distributions
+# @param suite
+#   package suite
+# @param repository
+#   the name of the repository
+# @param url
+#   a valid repository URL
+# @param basedir
+#   The base directory of the repository
+# @param architectures
+#   architectures
+# @param components
+#   components
+# @param udebcomponents
+#   udebcomponents
+# @param flat
+#   flat
+# @param verify_release
+#   check the GPG signature Releasefile
+# @param ignore_release
+#   ignore_release
+# @param filter_action
+#   default action when something is not found in the list
+# @param filter_name
+#   Name of a filter list created with reprepro::filterlist,
+#   matching binary packages
+# @param filter_src_name
+#   Name of a filter list created with reprepro::filterlist,
+#   matching source packages
+# @param download_lists_as
+#   specify in which order reprepro will look for a usable
+#   variant of needed index files ( .gz, .bz2, .lzma, .xz and .diff)
+# @param getinrelease
+#   if this is set to 'no', no InRelease file is downloaded but
+#   only Release (and Release.gpg ) are tried.
 #
-#   - *name*: the name of the update-upstream use in the
-#             Update field in conf/distributions
-#   - *ensure*: present/absent, defaults to present
-#   - *suite*: package suite
-#   - *url*: a valid repository URL
-#   - *verify_release*: check the GPG signature Releasefile
-#   - *filter_action*: default action when something is not found in the list
-#   - *filter_name*: Name of a filter list created with reprepro::filterlist, matching binary packages
-#   - *filter_src_name: Name of a filter list created with reprepro::filterlist, matching source packages
-#   - *download_lists_as: specify in which order reprepro will look for a usable variant of needed index
-#     files ( .gz, .bz2, .lzma, .xz and .diff)
-#   - *getinrelease: if this is set to 'no', no InRelease file is downloaded but
-#     only Release (and Release.gpg ) are tried.
-#
-# === Requires
-#
-#   - Class["reprepro"]
-#
-# === Example
-#
+# @example
 #   reprepro::update {"lenny-backports":
 #     suite       => 'lenny',
 #     repository  => "dev",

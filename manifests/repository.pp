@@ -1,28 +1,31 @@
-# == Definition: reprepro::repository
 #
-#   Adds a packages repository.
+# Adds a packages repository.
 #
-# === Parameters
+# @param name
+#   the name of the repository
+# @param ensure
+#   present/absent, defaults to present
+# @param basedir
+#   base directory of reprepro
+# @param incoming_name
+#   the name of the rule-set, used as argument
+# @param incoming_dir
+#   the name of the directory to scan for .changes files
+# @param incoming_tmpdir
+#   directory where the files are copied into
+#   before they are read
+# @param incoming_allow
+#   allowed distributions
+# @param owner
+#   owner of reprepro files
+# @param group
+#   reprepro files group
+# @param options
+#   reprepro options
+# @param createsymlinks
+#   create suite symlinks
 #
-#   - *name*: the name of the repository
-#   - *ensure*: present/absent, defaults to present
-#   - *basedir*: base directory of reprepro
-#   - *incoming_name*: the name of the rule-set, used as argument
-#   - *incoming_dir*: the name of the directory to scan for .changes files
-#   - *incoming_tmpdir*: directory where the files are copied into
-#                        before they are read
-#   - *incoming_allow*: allowed distributions
-#   - *owner*: owner of reprepro files
-#   - *group*: reprepro files group
-#   - *options*: reprepro options
-#   - *createsymlinks*: create suite symlinks
-#
-# === Requires
-#
-#   - Class["reprepro"]
-#
-# === Example
-#
+# @example
 #   reprepro::repository { 'localpkgs':
 #     ensure  => present,
 #     options => ['verbose', 'basedir .'],

@@ -1,21 +1,21 @@
-# == Definition: reprepro::filterlist
 #
-#   Adds a FilterList
+# Adds a FilterList
 #
-# === Parameters
+# Packages list have the same syntax as the output of dpkg --get-selections
 #
-#   - *name*: name of the filter list
-#   - *ensure*: present/absent, defaults to present
-#   - *repository*: the name of the repository
-#   - *packages*: a list of packages, if the list is empty, the file
-#                 content won't be managed by puppet
+# @param name
+#   name of the filter list
+# @param ensure
+#   present/absent, defaults to present
+# @param repository
+#   the name of the repository
+# @param packages
+#   a list of packages, if the list is empty, the file
+#   content won't be managed by puppet
+# @param basedir
+#   directory base to use, defaults to $reprepro::basedir
 #
-# === Requires
-#
-#   - Class["reprepro"]
-#
-# === Example
-#
+# @example
 #   reprepro::filterlist {"lenny-backports":
 #     ensure     => present,
 #     repository => "dev",
@@ -26,9 +26,6 @@
 #     ],
 #   }
 #
-# === Warning
-#
-#   - Packages list have the same syntax as the output of dpkg --get-selections
 #
 define reprepro::filterlist (
   String $repository,

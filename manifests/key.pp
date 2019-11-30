@@ -1,13 +1,14 @@
-# == Definition: reprepro::key
 #
 # Import a PGP key into the local keyring of the reprepro user
 #
-# === Parameters
-#
-# - *key_source* Path to the key in gpg --export format. This is
-#    used as the source parameter in a puppet File resource.
-# - *homedir* Home directory of the reprepro user. Defaults to
-#    /var/packages.
+# @param key_source
+#   Path to the key in gpg --export format. This is
+#   used as the source parameter in a puppet File resource.
+# @param key_content
+#   define the key content instead of pointing to a source file
+# @param homedir
+#   Home directory of the reprepro user. 
+#   Defaults to $reprepro::homedir
 #
 define reprepro::key (
   String $key_source  = '',
