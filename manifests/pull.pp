@@ -29,17 +29,17 @@
 #   }
 #
 define reprepro::pull (
-  $repository,
-  $from,
-  $ensure          = 'present',
-  $basedir         = $::reprepro::basedir,
-  $components      = '',
-  $architectures   = '',
-  $udebcomponents  = '',
-  $filter_action   = '',
-  $filter_name     = '',
-  $filter_src_name = '',
-  $filter_formula  = '',
+  String $repository,
+  String $from,
+  String $ensure          = 'present',
+  String $basedir         = $::reprepro::basedir,
+  String $components      = '',
+  String $architectures   = '',
+  String $udebcomponents  = '',
+  String $filter_action   = '',
+  String $filter_name     = '',
+  String $filter_src_name = '',
+  String $filter_formula  = '',
 ) {
 
   include reprepro::params

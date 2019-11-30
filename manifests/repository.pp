@@ -29,16 +29,16 @@
 #   }
 #
 define reprepro::repository (
-  $ensure          = present,
-  $basedir         = $::reprepro::basedir,
-  $incoming_name   = 'incoming',
-  $incoming_dir    = 'incoming',
-  $incoming_tmpdir = 'tmp',
-  $incoming_allow  = '',
-  $owner           = 'reprepro',
-  $group           = 'reprepro',
-  $options         = ['verbose', 'ask-passphrase', 'basedir .'],
-  $createsymlinks  = false,
+  String  $ensure          = 'present',
+  String  $basedir         = $::reprepro::basedir,
+  String  $incoming_name   = 'incoming',
+  String  $incoming_dir    = 'incoming',
+  String  $incoming_tmpdir = 'tmp',
+  String  $incoming_allow  = '',
+  String  $owner           = 'reprepro',
+  String  $group           = 'reprepro',
+  Array   $options         = ['verbose', 'ask-passphrase', 'basedir .'],
+  Boolean $createsymlinks  = false,
   ) {
 
   include reprepro::params

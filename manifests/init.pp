@@ -14,13 +14,13 @@
 #   class { 'reprepro': }
 #
 class reprepro (
-  $basedir      = $::reprepro::params::basedir,
-  $homedir      = $::reprepro::params::homedir,
-  $manage_user  = true,
-  $user_name    = $::reprepro::params::user_name,
-  $group_name   = $::reprepro::params::group_name,
-  $keys         = {},
-  $key_defaults = {},
+  String  $basedir      = $::reprepro::params::basedir,
+  String  $homedir      = $::reprepro::params::homedir,
+  Boolean $manage_user  = true,
+  String  $user_name    = $::reprepro::params::user_name,
+  String  $group_name   = $::reprepro::params::group_name,
+  Hash    $keys         = {},
+  Hash    $key_defaults = {},
 ) inherits reprepro::params {
   validate_bool($manage_user)
 

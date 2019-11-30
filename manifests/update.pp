@@ -25,7 +25,7 @@
 # === Example
 #
 #   reprepro::update {"lenny-backports":
-#     ensure      => present,
+#     ensure      => 'present',
 #     suite       => 'lenny',
 #     repository  => "dev",
 #     url         => 'http://backports.debian.org/debian-backports',
@@ -33,22 +33,22 @@
 #   }
 #
 define reprepro::update (
-  $suite,
-  $repository,
-  $url,
-  $basedir = $::reprepro::basedir,
-  $ensure = present,
-  $architectures = undef,
-  $components = undef,
-  $udebcomponents = undef,
-  $flat = undef,
-  $verify_release = 'blindtrust',
-  $ignore_release = 'No',
-  $filter_action = '',
-  $filter_name = '',
-  $filter_src_name='',
-  $download_lists_as='',
-  $getinrelease=undef,
+  String           $suite,
+  String           $repository,
+  String           $url,
+  String           $basedir           = $::reprepro::basedir,
+  String           $ensure            = 'present',
+  Optional[String] $architectures     = undef,
+  Optional[String] $components        = undef,
+  Optional[String] $udebcomponents    = undef,
+  Optional[String] $flat              = undef,
+  String           $verify_release    = 'blindtrust',
+  String           $ignore_release    = 'No',
+  String           $filter_action     = '',
+  String           $filter_name       = '',
+  String           $filter_src_name   = '',
+  String           $download_lists_as = '',
+  Optional[String] $getinrelease      = undef,
 ) {
 
   include reprepro::params

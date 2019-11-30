@@ -10,9 +10,9 @@
 #    /var/packages.
 #
 define reprepro::key (
-  $key_source  = '',
-  $key_content = '',
-  $homedir     = $::reprepro::homedir,
+  String $key_source  = '',
+  String $key_content = '',
+  String $homedir     = $::reprepro::homedir,
 ) {
 
   include reprepro::params

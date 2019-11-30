@@ -31,10 +31,10 @@
 #   - Packages list have the same syntax as the output of dpkg --get-selections
 #
 define reprepro::filterlist (
-  $repository,
-  $packages = [],
-  $basedir = $::reprepro::basedir,
-  $ensure=present,
+  String $repository,
+  Array  $packages = [],
+  String $basedir  = $::reprepro::basedir,
+  String $ensure   = 'present',
 ) {
 
   include reprepro::params
