@@ -379,7 +379,7 @@ PLATFORMS
 DEPENDENCIES
   fast_gettext
   json (= 2.1.0)
-  puppet
+  puppet (= 6.10.1)
   puppet-module-posix-default-r2.5 (~> 0.3)
   puppet-module-posix-dev-r2.5 (~> 0.3)
   puppet-module-win-default-r2.5 (~> 0.3)

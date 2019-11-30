@@ -75,8 +75,8 @@ class reprepro (
     owner  => $user_name,
     group  => $group_name,
   }
-  ->
-  file { "${homedir}/bin/update-distribution.sh":
+
+  -> file { "${homedir}/bin/update-distribution.sh":
     ensure  => file,
     mode    => '0755',
     content => template('reprepro/update-distribution.sh.erb'),

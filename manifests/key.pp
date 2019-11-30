@@ -22,7 +22,7 @@ define reprepro::key (
   if $key_source == $key_content {
     fail('You have to specify key_source or key_content')
   }
- 
+
   if $key_source != '' {
     file {$keypath:
       ensure  => 'present',
