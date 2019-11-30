@@ -14,18 +14,20 @@
 #   class { 'reprepro': }
 #
 class reprepro (
-  String  $basedir      = $::reprepro::params::basedir,
-  String  $homedir      = $::reprepro::params::homedir,
-  Boolean $manage_user  = true,
-  String  $user_name    = $::reprepro::params::user_name,
-  String  $group_name   = $::reprepro::params::group_name,
-  Hash    $keys         = {},
-  Hash    $key_defaults = {},
-) inherits reprepro::params {
+  String  $basedir        = '/var/packages',
+  String  $homedir        = '/var/packages',
+  Boolean $manage_user    = true,
+  String  $user_name      = 'reprepro',
+  String  $group_name     = 'reprepro',
+  Hash    $keys           = {},
+  Hash    $key_defaults   = {},
+  String  $package_ensure = 'present',
+  String  $package_name   = 'reprepro',
+) {
   validate_bool($manage_user)
 
-  package { $::reprepro::params::package_name:
-    ensure => $::reprepro::params::ensure,
+  package { $package_name:
+    ensure => $package_ensure,
   }
 
   if $manage_user {

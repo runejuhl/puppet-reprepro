@@ -81,7 +81,6 @@ define reprepro::distribution (
 ) {
 
   require reprepro
-  include reprepro::params
 
   # create update and pull resources:
   $_pull   = join(union([$pull],   keys($create_pull)),   ' ')

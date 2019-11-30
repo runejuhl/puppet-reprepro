@@ -15,8 +15,6 @@ define reprepro::key (
   String $homedir     = $::reprepro::homedir,
 ) {
 
-  include reprepro::params
-
   $keypath = "${homedir}/.gnupg/${name}"
 
   if $key_source == $key_content {

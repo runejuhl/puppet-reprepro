@@ -42,8 +42,6 @@ define reprepro::pull (
   String $filter_formula  = '',
 ) {
 
-  include reprepro::params
-
   if $filter_name != '' {
     if $filter_action == '' {
       $filter_list = "deinstall ${filter_name}-filter-list"

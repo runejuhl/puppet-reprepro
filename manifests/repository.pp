@@ -41,8 +41,6 @@ define reprepro::repository (
   Boolean $createsymlinks  = false,
   ) {
 
-  include reprepro::params
-
 # lint:ignore:selector_inside_resource
   file { "${basedir}/${name}":
     ensure  => $ensure ? {

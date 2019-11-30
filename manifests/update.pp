@@ -51,8 +51,6 @@ define reprepro::update (
   Optional[String] $getinrelease      = undef,
 ) {
 
-  include reprepro::params
-
   if $flat and ($components or $udebcomponents) {
     fail('$components and $udebcomponents are not allowed when $flat is provided.')
   }
