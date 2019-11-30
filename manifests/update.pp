@@ -25,7 +25,6 @@
 # === Example
 #
 #   reprepro::update {"lenny-backports":
-#     ensure      => 'present',
 #     suite       => 'lenny',
 #     repository  => "dev",
 #     url         => 'http://backports.debian.org/debian-backports',
@@ -37,7 +36,6 @@ define reprepro::update (
   String           $repository,
   String           $url,
   String           $basedir           = $::reprepro::basedir,
-  String           $ensure            = 'present',
   Optional[String] $architectures     = undef,
   Optional[String] $components        = undef,
   Optional[String] $udebcomponents    = undef,
@@ -77,11 +75,6 @@ define reprepro::update (
     Reprepro::Filterlist[$filter_src_name] -> Concat::Fragment["update-${name}"]
   } else {
     $filter_src_list = ''
-  }
-
-  $manage = $ensure ? {
-    'present' => false,
-    default => true,
   }
 
   concat::fragment {"update-${name}":

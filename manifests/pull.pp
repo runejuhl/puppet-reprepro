@@ -31,7 +31,6 @@
 define reprepro::pull (
   String $repository,
   String $from,
-  String $ensure          = 'present',
   String $basedir         = $::reprepro::basedir,
   String $components      = '',
   String $architectures   = '',

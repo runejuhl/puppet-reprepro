@@ -38,7 +38,6 @@
 # === Example
 #
 #   reprepro::distribution {"lenny":
-#     ensure        => present,
 #     repository    => "my-repository",
 #     origin        => "Camptocamp",
 #     label         => "Camptocamp",
@@ -60,7 +59,6 @@ define reprepro::distribution (
   Optional[String] $description            = undef,
   String           $sign_with              = '',
   String           $codename               = $name,
-  String           $ensure                 = 'present',
   String           $basedir                = $::reprepro::basedir,
   String           $homedir                = $::reprepro::homedir,
   Optional[String] $fakecomponentprefix    = undef,
@@ -93,15 +91,10 @@ define reprepro::distribution (
   create_resources('::reprepro::pull', $create_pull, $defaults)
   create_resources('::reprepro::filterlist', $create_filterlist, $defaults)
 
-  $notify = $ensure ? {
-    'present' => Exec["export distribution ${name}"],
-    default => undef,
-  }
-
   concat::fragment { "distribution-${name}":
     target  => "${basedir}/${repository}/conf/distributions",
     content => template('reprepro/distribution.erb'),
-    notify  => $notify,
+    notify  => Exec["export distribution ${name}"],
   }
 
   exec {"export distribution ${name}":
