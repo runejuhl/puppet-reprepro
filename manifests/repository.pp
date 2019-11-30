@@ -24,6 +24,10 @@
 #   reprepro options
 # @param createsymlinks
 #   create suite symlinks
+# @param documentroot
+#   documentroot of the webserver (default undef)
+#   if set, softlinks to the reprepro directories are made
+#   the directory $documentroot must already exist
 #
 # @example
 #   reprepro::repository { 'localpkgs':
@@ -42,6 +46,7 @@ define reprepro::repository (
   String                 $group           = 'reprepro',
   Array                  $options         = ['verbose', 'ask-passphrase', 'basedir .'],
   Boolean                $createsymlinks  = false,
+  Optional[String]       $documentroot    = undef,
 ) {
 
   if $incoming_allow =~ Array {
@@ -150,6 +155,21 @@ define reprepro::repository (
       command     => "su -c 'reprepro -b ${basedir}/${name} --delete createsymlinks' ${owner}",
       refreshonly => true,
       subscribe   => Concat[ "${basedir}/${name}/conf/distributions" ];
+    }
+  }
+
+  if $documentroot {
+    # create base-directory and symbolic link to repository for apache
+    file {"${documentroot}/${name}":
+      ensure => directory,
+    }
+    file {"${documentroot}/${name}/dists":
+      ensure => link,
+      target => "${basedir}/${name}/dists",
+    }
+    file {"${documentroot}/${name}/pool":
+      ensure => link,
+      target => "${basedir}/${name}/pool",
     }
   }
 }
