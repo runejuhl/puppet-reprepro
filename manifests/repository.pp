@@ -65,49 +65,15 @@ define reprepro::repository (
   }
 # lint:endignore
 
-  file { "${basedir}/${name}/dists":
-    ensure => directory,
-    mode   => '2755',
-    owner  => $owner,
-    group  => $group,
-  }
-
-  file { "${basedir}/${name}/pool":
-    ensure => directory,
-    mode   => '2755',
-    owner  => $owner,
-    group  => $group,
-  }
-
-  file { "${basedir}/${name}/conf":
-    ensure => directory,
-    mode   => '2755',
-    owner  => $owner,
-    group  => $group,
-  }
-
-  file { "${basedir}/${name}/lists":
-    ensure => directory,
-    mode   => '2755',
-    owner  => $owner,
-    group  => $group,
-  }
-
-  file { "${basedir}/${name}/db":
-    ensure => directory,
-    mode   => '2755',
-    owner  => $owner,
-    group  => $group,
-  }
-
-  file { "${basedir}/${name}/logs":
-    ensure => directory,
-    mode   => '2755',
-    owner  => $owner,
-    group  => $group,
-  }
-
-  file { "${basedir}/${name}/tmp":
+  file {
+    [ "${basedir}/${name}/dists",
+      "${basedir}/${name}/pool",
+      "${basedir}/${name}/conf",
+      "${basedir}/${name}/lists",
+      "${basedir}/${name}/db",
+      "${basedir}/${name}/logs",
+      "${basedir}/${name}/tmp",
+    ]:
     ensure => directory,
     mode   => '2755',
     owner  => $owner,
