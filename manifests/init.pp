@@ -93,5 +93,16 @@ class reprepro (
     group   => $group_name,
   }
 
+  concat { "${homedir}/bin/update-all-repositories.sh":
+    owner   => $user_name,
+    group   => $group_name,
+    mode    => '0755',
+  }
+  concat::fragment{"update-repositories header":
+    target  => "${homedir}/bin/update-all-repositories.sh",
+    content => "#!/bin/sh\n# Managed with puppet (module: reprepro)\n\n",
+    order   => '0',
+  }
+
   create_resources('::reprepro::key', $keys, $key_defaults)
 }

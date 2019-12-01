@@ -49,6 +49,8 @@ define reprepro::repository (
   Optional[String]       $documentroot    = undef,
 ) {
 
+  include reprepro
+
   if $incoming_allow =~ Array {
     $_incoming_allow = $incoming_allow.join(' ')
   } else {
@@ -171,5 +173,11 @@ define reprepro::repository (
       ensure => link,
       target => "${basedir}/${name}/pool",
     }
+  }
+
+  concat::fragment{"update-repositories add repository ${name}":
+    target  => "${reprepro::homedir}/bin/update-all-repositories.sh",
+    content => "/usr/bin/reprepro -b ${basedir}/${name} --noskipold update\n",
+    order   => "50-${name}",
   }
 }
