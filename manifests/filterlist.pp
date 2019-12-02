@@ -34,6 +34,8 @@ define reprepro::filterlist (
   String $ensure   = 'present',
 ) {
 
+  include reprepro
+
   if (size($packages) > 0) {
     file {"${basedir}/${repository}/conf/${name}-filter-list":
       ensure  => $ensure,

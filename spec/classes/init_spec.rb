@@ -93,14 +93,4 @@ describe 'reprepro' do
       is_expected.not_to contain_user('reprepro')
     end
   end
-
-  context 'With manage_user set to an invalid value' do
-    let :params do
-      default_params.merge(manage_user: 'a string')
-    end
-
-    it do
-      is_expected.to raise_error(Puppet::Error, %r{is not a boolean})
-    end
-  end
 end

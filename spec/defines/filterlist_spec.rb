@@ -15,7 +15,6 @@ describe 'reprepro::filterlist' do
       default_params
     end
 
-    it { is_expected.to contain_class('reprepro::params') }
     it { is_expected.to contain_file('/var/packages/dev/conf/lenny-backports-filter-list') }
   end
 
@@ -27,7 +26,6 @@ describe 'reprepro::filterlist' do
       )
     end
 
-    it { is_expected.to contain_class('reprepro::params') }
     it { is_expected.to contain_file('/foo/bar/dev/conf/lenny-backports-filter-list') }
   end
 end

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe 'reprepro::distribution' do
+  let(:pre_condition) { ['include reprepro', 'reprepro::repository{localpkgs:}'] }
   let :default_params do
     {
       repository: 'localpkgs',
@@ -24,8 +25,6 @@ describe 'reprepro::distribution' do
                            codename: 'precise')
     end
 
-    it { is_expected.to contain_class('reprepro::params') }
-
     it do
       is_expected.to contain_concat__fragment('distribution-precise').with(target: '/var/packages/localpkgs/conf/distributions').that_notifies('Exec[export distribution precise]')
     end
@@ -36,7 +35,5 @@ describe 'reprepro::distribution' do
 
     it { is_expected.to contain_file('/var/packages/localpkgs/tmp/precise') }
     it { is_expected.to contain_cron('precise cron') }
-
-    it { is_expected.not_to contain_concat('/var/packages/localpkgs/conf/updates') }
   end
 end

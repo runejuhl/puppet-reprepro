@@ -21,8 +21,6 @@ describe 'reprepro::update' do
     fragment         = 'update-lenny-backports'
     target           = '/var/packages/dev/conf/updates'
 
-    it { is_expected.to contain_class('reprepro::params') }
-
     it do
       is_expected.to contain_concat__fragment(fragment).with(target: target)
     end

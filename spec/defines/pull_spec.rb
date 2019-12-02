@@ -18,8 +18,6 @@ describe 'reprepro::pull' do
     fragment         = 'pulls-lenny-backports'
     target           = '/var/packages/localpkgs/conf/pulls'
 
-    it { is_expected.to contain_class('reprepro::params') }
-
     it do
       is_expected.to contain_concat__fragment(fragment).with(target: target)
     end
