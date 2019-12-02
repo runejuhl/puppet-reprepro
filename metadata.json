@@ -1,18 +1,34 @@
 {
   "name": "cirrax-reprepro",
-  "version": "0.1.0",
+  "version": "3.1.0",
   "author": "Cirrax GmbH",
-  "summary": "",
-  "license": "GPL-3.0",
-  "source": "",
+  "summary": "Puppet module to create apt repositories with reprepro",
+  "license": "Apache-2.0",
+  "source": "https://github.com/cirrax/puppet-reprepro",
+  "project_page": "https://github.com/cirrax/puppet-reprepro",
+  "issues_url": "https://github.com/cirrax/puppet-reprepro/issues",
+  "tags": [
+    "reprepro",
+    "apt",
+    "package",
+    "repository"
+  ],
   "dependencies": [
-
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=3.0.0 < 7.0.0"
+    },
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">= 1.0.0 < 7.0.0"
+    }
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "9"
+        "9",
+        "10"
       ]
     },
     {
