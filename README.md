@@ -56,13 +56,11 @@ class { 'reprepro':
 
 # Set up a repository
 reprepro::repository { 'localpkgs':
-  basedir => $basedir,
   options => ['basedir .'],
 }
 
 # Create a distribution within that repository
 reprepro::distribution { 'precise':
-  basedir       => $basedir,
   repository    => 'localpkgs',
   origin        => 'Foobar',
   label         => 'Foobar',

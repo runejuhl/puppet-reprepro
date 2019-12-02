@@ -6,17 +6,15 @@
 #   used as the source parameter in a puppet File resource.
 # @param key_content
 #   define the key content instead of pointing to a source file
-# @param homedir
-#   Home directory of the reprepro user. 
-#   Defaults to $reprepro::homedir
 #
 define reprepro::key (
   String $key_source  = '',
   String $key_content = '',
-  String $homedir     = $::reprepro::homedir,
 ) {
 
-  $keypath = "${homedir}/.gnupg/${name}"
+  include reprepro
+
+  $keypath = "${reprepro::homedir}/.gnupg/${name}"
 
   if $key_source == $key_content {
     fail('You have to specify key_source or key_content')
@@ -47,6 +45,7 @@ define reprepro::key (
   }
 
   exec {"import-${name}":
+    path        => ['/usr/local/bin', '/usr/bin', '/bin'],
     command     => "su -c 'gpg --import ${keypath}' ${::reprepro::user_name}",
     refreshonly => true,
   }

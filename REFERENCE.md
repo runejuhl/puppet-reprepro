@@ -125,14 +125,6 @@ reprepro::distribution {"lenny":
 
 The following parameters are available in the `reprepro::distribution` defined type.
 
-##### `basedir`
-
-Data type: `String`
-
-reprepro basedir
-
-Default value: $::reprepro::basedir
-
 ##### `repository`
 
 Data type: `String`
@@ -198,20 +190,6 @@ Data type: `String`
 codename (defaults to $name)
 
 Default value: $name
-
-##### `basedir`
-
-the basedir
-
-Default value: $::reprepro::basedir
-
-##### `homedir`
-
-Data type: `String`
-
-the homedir
-
-Default value: $::reprepro::homedir
 
 ##### `fakecomponentprefix`
 
@@ -390,14 +368,6 @@ content won't be managed by puppet
 
 Default value: []
 
-##### `basedir`
-
-Data type: `String`
-
-directory base to use, defaults to $reprepro::basedir
-
-Default value: $::reprepro::basedir
-
 ### reprepro::key
 
 Import a PGP key into the local keyring of the reprepro user
@@ -423,15 +393,6 @@ define the key content instead of pointing to a source file
 
 Default value: ''
 
-##### `homedir`
-
-Data type: `String`
-
-Home directory of the reprepro user.
-Defaults to $reprepro::homedir
-
-Default value: $::reprepro::homedir
-
 ### reprepro::pull
 
 Add a repository pull rule.
@@ -445,7 +406,6 @@ reprepro::pull {'lenny-backports':
   repository  => 'localpkgs',
   from        => 'dev',
   filter_name => 'lenny-backports',
-  basedir     => '/srv/reprepro',
 }
 ```
 
@@ -526,14 +486,6 @@ FilterFormula
 
 Default value: ''
 
-##### `basedir`
-
-Data type: `String`
-
-basedir for installation
-
-Default value: $::reprepro::basedir
-
 ### reprepro::repository
 
 Adds a packages repository.
@@ -565,14 +517,6 @@ present/absent, defaults to present
 
 Default value: 'present'
 
-##### `basedir`
-
-Data type: `String`
-
-base directory of reprepro
-
-Default value: $::reprepro::basedir
-
 ##### `incoming_name`
 
 Data type: `String`
@@ -600,27 +544,11 @@ Default value: 'tmp'
 
 ##### `incoming_allow`
 
-Data type: `String`
+Data type: `Variant[String, Array]`
 
 allowed distributions
 
 Default value: ''
-
-##### `owner`
-
-Data type: `String`
-
-owner of reprepro files
-
-Default value: 'reprepro'
-
-##### `group`
-
-Data type: `String`
-
-reprepro files group
-
-Default value: 'reprepro'
 
 ##### `options`
 
@@ -637,6 +565,16 @@ Data type: `Boolean`
 create suite symlinks
 
 Default value: `false`
+
+##### `documentroot`
+
+Data type: `Optional[String]`
+
+documentroot of the webserver (default undef)
+if set, softlinks to the reprepro directories are made
+the directory $documentroot must already exist
+
+Default value: `undef`
 
 ### reprepro::update
 
@@ -681,14 +619,6 @@ the name of the repository
 Data type: `String`
 
 a valid repository URL
-
-##### `basedir`
-
-Data type: `String`
-
-The base directory of the repository
-
-Default value: $::reprepro::basedir
 
 ##### `architectures`
 

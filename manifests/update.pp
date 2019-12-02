@@ -10,8 +10,6 @@
 #   the name of the repository
 # @param url
 #   a valid repository URL
-# @param basedir
-#   The base directory of the repository
 # @param architectures
 #   architectures
 # @param components
@@ -51,7 +49,6 @@ define reprepro::update (
   String           $suite,
   String           $repository,
   String           $url,
-  String           $basedir           = $::reprepro::basedir,
   Optional[String] $architectures     = undef,
   Optional[String] $components        = undef,
   Optional[String] $udebcomponents    = undef,
@@ -64,6 +61,8 @@ define reprepro::update (
   String           $download_lists_as = '',
   Optional[String] $getinrelease      = undef,
 ) {
+
+  include reprepro
 
   if $flat and ($components or $udebcomponents) {
     fail('$components and $udebcomponents are not allowed when $flat is provided.')
@@ -95,6 +94,6 @@ define reprepro::update (
 
   concat::fragment {"update-${name}":
     content => template('reprepro/update.erb'),
-    target  => "${basedir}/${repository}/conf/updates",
+    target  => "${reprepro::basedir}/${repository}/conf/updates",
   }
 }

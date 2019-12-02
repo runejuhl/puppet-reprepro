@@ -31,7 +31,6 @@ class reprepro (
   String  $package_ensure = 'present',
   String  $package_name   = 'reprepro',
 ) {
-  validate_bool($manage_user)
 
   package { $package_name:
     ensure => $package_ensure,

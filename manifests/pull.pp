@@ -22,21 +22,17 @@
 #   FilterSrcList parameter
 # @param filter_formula
 #   FilterFormula
-# @param basedir
-#   basedir for installation
 #
 # @example
 #   reprepro::pull {'lenny-backports':
 #     repository  => 'localpkgs',
 #     from        => 'dev',
 #     filter_name => 'lenny-backports',
-#     basedir     => '/srv/reprepro',
 #   }
 #
 define reprepro::pull (
   String $repository,
   String $from,
-  String $basedir         = $::reprepro::basedir,
   String $components      = '',
   String $architectures   = '',
   String $udebcomponents  = '',
@@ -71,7 +67,7 @@ define reprepro::pull (
   }
 
   concat::fragment {"pulls-${name}":
-    target  => "${basedir}/${repository}/conf/pulls",
+    target  => "${reprepro::basedir}/${repository}/conf/pulls",
     content => template('reprepro/pull.erb'),
   }
 }

@@ -1,8 +1,6 @@
 #
 # Adds a "Distribution" to manage.
 #
-# @param basedir
-#   reprepro basedir
 # @param repository
 #   the name of the distribution
 # @param origin
@@ -21,10 +19,6 @@
 #   email of the gpg key
 # @param codename
 #   codename (defaults to $name)
-# @param basedir
-#   the basedir
-# @param homedir
-#   the homedir
 # @param fakecomponentprefix
 #   fakecomponentprefix
 # @param udebcomponents
@@ -83,8 +77,6 @@ define reprepro::distribution (
   Optional[String] $description            = undef,
   String           $sign_with              = '',
   String           $codename               = $name,
-  String           $basedir                = $::reprepro::basedir,
-  String           $homedir                = $::reprepro::homedir,
   Optional[String] $fakecomponentprefix    = undef,
   String           $udebcomponents         = $components,
   String           $deb_indices            = 'Packages Release .gz .bz2',
@@ -102,27 +94,26 @@ define reprepro::distribution (
   Hash             $create_filterlist      = {},
 ) {
 
-  require reprepro
+  include reprepro
 
   # create update and pull resources:
   $_pull   = join(union([$pull],   keys($create_pull)),   ' ')
   $_update = join(union([$update], keys($create_update)), ' ')
   $defaults = {
     repository => $repository,
-    basedir    => $basedir,
   }
   create_resources('::reprepro::update', $create_update, $defaults)
   create_resources('::reprepro::pull', $create_pull, $defaults)
   create_resources('::reprepro::filterlist', $create_filterlist, $defaults)
 
   concat::fragment { "distribution-${name}":
-    target  => "${basedir}/${repository}/conf/distributions",
+    target  => "${reprepro::basedir}/${repository}/conf/distributions",
     content => template('reprepro/distribution.erb'),
     notify  => Exec["export distribution ${name}"],
   }
 
   exec {"export distribution ${name}":
-    command     => "su -c 'reprepro -b ${basedir}/${repository} export ${codename}' ${reprepro::user_name}",
+    command     => "su -c 'reprepro -b ${reprepro::basedir}/${repository} export ${codename}' ${reprepro::user_name}",
     path        => ['/bin', '/usr/bin'],
     refreshonly => true,
     logoutput   => on_failure,
@@ -133,7 +124,7 @@ define reprepro::distribution (
   }
 
   # Configure system for automatically adding packages
-  file { "${basedir}/${repository}/tmp/${codename}":
+  file { "${reprepro::basedir}/${repository}/tmp/${codename}":
     ensure => directory,
     mode   => '0755',
     owner  => $::reprepro::user_name,
@@ -143,9 +134,9 @@ define reprepro::distribution (
   if $install_cron {
 
     if $snapshots {
-      $command = "${homedir}/bin/update-distribution.sh -r ${repository} -c ${codename} -s"
+      $command = "${reprepro::homedir}/bin/update-distribution.sh -r ${repository} -c ${codename} -s"
     } else {
-      $command = "${homedir}/bin/update-distribution.sh -r ${repository} -c ${codename}"
+      $command = "${reprepro::homedir}/bin/update-distribution.sh -r ${repository} -c ${codename}"
     }
 
     cron { "${name} cron":
@@ -153,7 +144,7 @@ define reprepro::distribution (
       user        => $::reprepro::user_name,
       environment => 'SHELL=/bin/bash',
       minute      => '*/5',
-      require     => File["${homedir}/bin/update-distribution.sh"],
+      require     => File["${reprepro::homedir}/bin/update-distribution.sh"],
     }
   }
 }
