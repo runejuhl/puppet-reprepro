@@ -1,20 +1,25 @@
 require 'spec_helper'
 
-describe 'reprepro::update' do
+describe 'reprepro::key' do
   let :default_params do
     {
-      suite: 'lenny',
-      repository: 'dev',
-      url: 'http://backports.debian.org/debian-backports',
-      ignore_release: 'No',
+      key_source: '',
+      key_content: '',
     }
   end
 
-  shared_examples 'reprepro::update shared examples' do
+  shared_examples 'reprepro::key shared examples' do
     it { is_expected.to compile.with_all_deps }
     it {
-      is_expected.to contain_concat__fragment('update-' + title)
-        .with_target(reprepro_params[:basedir] + '/' + params[:repository] + '/conf/updates')
+      is_expected.to contain_file(reprepro_params[:homedir] + '/.gnupg/' + title)
+        .with_owner(reprepro_params[:owner])
+        .with_group(reprepro_params[:group])
+        .with_mode('0660')
+    }
+    it {
+      is_expected.to contain_exec('import-' + title)
+        .with_refreshonly(true)
+        .with_command("su -c 'gpg --import " + reprepro_params[:homedir] + '/.gnupg/' + title + "' " + reprepro_params[:owner])
     }
   end
 
@@ -33,12 +38,12 @@ describe 'reprepro::update' do
           }
         end
 
-        let(:title) { 'lenny-backports' }
+        let(:title) { 'default-key' }
         let(:params) do
-          default_params
+          default_params.merge(key_content: 'fsdfsdfsf')
         end
 
-        it_behaves_like 'reprepro::update shared examples'
+        it_behaves_like 'reprepro::key shared examples'
       end
 
       context 'With non default parameters on reprepro main class' do
@@ -51,12 +56,12 @@ describe 'reprepro::update' do
             group: 'repogroup',
           }
         end
-        let(:title) { 'localpkgs' }
+        let(:title) { 'mykey' }
         let :params do
-          default_params
+          default_params.merge(key_source: '/tmp/key')
         end
 
-        it_behaves_like 'reprepro::update shared examples'
+        it_behaves_like 'reprepro::key shared examples'
       end
     end
   end
