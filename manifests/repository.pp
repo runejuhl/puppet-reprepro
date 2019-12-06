@@ -124,7 +124,7 @@ define reprepro::repository (
     }
     concat::fragment{"update-repositories add repository ${name}":
       target  => "${reprepro::homedir}/bin/update-all-repositories.sh",
-      content => "/usr/bin/reprepro -b ${reprepro::basedir}/${name} --noskipold update\n",
+      content => "echo\necho 'updatating ${name}:'\n/usr/bin/reprepro -b ${reprepro::basedir}/${name} --noskipold update\n",
       order   => "50-${name}",
     }
   }

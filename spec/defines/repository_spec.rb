@@ -101,7 +101,6 @@ describe 'reprepro::repository' do
     it {
       is_expected.to contain_concat__fragment('update-repositories add repository ' + title)
         .with_target(reprepro_params[:homedir] + '/bin/update-all-repositories.sh')
-        .with_content('/usr/bin/reprepro -b ' + reprepro_params[:basedir] + '/' + title + " --noskipold update\n")
         .with_order('50-' + title)
     }
   end

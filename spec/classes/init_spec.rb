@@ -78,7 +78,6 @@ describe 'reprepro' do
     it {
       is_expected.to contain_concat__fragment('update-repositories header')
         .with_target(params[:homedir] + '/bin/update-all-repositories.sh')
-        .with_content("#!/bin/sh\n# Managed with puppet (module: reprepro)\n\n")
         .with_order('0')
     }
   end

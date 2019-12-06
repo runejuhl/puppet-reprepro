@@ -99,7 +99,7 @@ class reprepro (
   }
   concat::fragment{'update-repositories header':
     target  => "${homedir}/bin/update-all-repositories.sh",
-    content => "#!/bin/sh\n# Managed with puppet (module: reprepro)\n\n",
+    content => epp('reprepro/script-header.epp', { 'whoami' => $user_name }),
     order   => '0',
   }
 
