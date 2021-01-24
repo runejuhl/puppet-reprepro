@@ -7,12 +7,6 @@
   "source": "https://github.com/cirrax/puppet-reprepro",
   "project_page": "https://github.com/cirrax/puppet-reprepro",
   "issues_url": "https://github.com/cirrax/puppet-reprepro/issues",
-  "tags": [
-    "reprepro",
-    "apt",
-    "package",
-    "repository"
-  ],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
@@ -44,7 +38,13 @@
       "version_requirement": ">= 4.10.0 < 7.0.0"
     }
   ],
-  "pdk-version": "1.14.1",
-  "template-url": "pdk-default#1.14.1",
-  "template-ref": "1.14.1-0-g0b5b39b"
+  "tags": [
+    "reprepro",
+    "apt",
+    "package",
+    "repository"
+  ],
+  "pdk-version": "2.1.0",
+  "template-url": "pdk-default#2.1.0",
+  "template-ref": "tags/2.1.0-0-ga675ea5"
 }
