@@ -1,7 +1,7 @@
 #
 # Adds a packages repository.
 #
-# @param name
+# @param update_name
 #   the name of the update-upstream use in the
 #   Update field in conf/distributions
 # @param suite
@@ -49,6 +49,7 @@ define reprepro::update (
   String           $suite,
   String           $repository,
   String           $url,
+  String           $update_name       = $title,
   Optional[String] $architectures     = undef,
   Optional[String] $components        = undef,
   Optional[String] $udebcomponents    = undef,
@@ -75,7 +76,7 @@ define reprepro::update (
       $filter_list = "${filter_action} ${filter_name}-filter-list"
     }
     # Add dependency on filter list
-    Reprepro::Filterlist[$filter_name] -> Concat::Fragment["update-${name}"]
+    Reprepro::Filterlist[$filter_name] -> Concat::Fragment["update-${update_name}"]
   } else {
     $filter_list = ''
   }
@@ -87,12 +88,12 @@ define reprepro::update (
       $filter_src_list = "${filter_action} ${filter_src_name}-filter-list"
     }
     # Add dependency on filter list
-    Reprepro::Filterlist[$filter_src_name] -> Concat::Fragment["update-${name}"]
+    Reprepro::Filterlist[$filter_src_name] -> Concat::Fragment["update-${update_name}"]
   } else {
     $filter_src_list = ''
   }
 
-  concat::fragment {"update-${name}":
+  concat::fragment {"update-${update_name}":
     content => template('reprepro/update.erb'),
     target  => "${reprepro::basedir}/${repository}/conf/updates",
   }

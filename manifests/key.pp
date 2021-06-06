@@ -1,6 +1,8 @@
 #
 # Import a PGP key into the local keyring of the reprepro user
 #
+# @param key_name
+#   name of the key
 # @param key_source
 #   Path to the key in gpg --export format. This is
 #   used as the source parameter in a puppet File resource.
@@ -8,13 +10,14 @@
 #   define the key content instead of pointing to a source file
 #
 define reprepro::key (
+  String $key_name    = $title,
   String $key_source  = '',
   String $key_content = '',
 ) {
 
   include reprepro
 
-  $keypath = "${reprepro::homedir}/.gnupg/${name}"
+  $keypath = "${reprepro::homedir}/.gnupg/${key_name}"
 
   if $key_source == $key_content {
     fail('You have to specify key_source or key_content')
@@ -28,7 +31,7 @@ define reprepro::key (
       mode    => '0660',
       source  => $key_source,
       require => User[$::reprepro::user_name],
-      notify  => Exec["import-${name}"],
+      notify  => Exec["import-${key_name}"],
     }
   }
 
@@ -40,11 +43,11 @@ define reprepro::key (
       mode    => '0660',
       content => $key_content,
       require => User[$::reprepro::user_name],
-      notify  => Exec["import-${name}"],
+      notify  => Exec["import-${key_name}"],
     }
   }
 
-  exec {"import-${name}":
+  exec {"import-${key_name}":
     path        => ['/usr/local/bin', '/usr/bin', '/bin'],
     command     => "su -c 'gpg --import ${keypath}' ${::reprepro::user_name}",
     refreshonly => true,

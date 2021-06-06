@@ -18,7 +18,7 @@
 # @param sign_with
 #   email of the gpg key
 # @param codename
-#   codename (defaults to $name)
+#   codename (defaults to $title)
 # @param fakecomponentprefix
 #   fakecomponentprefix
 # @param udebcomponents
@@ -76,7 +76,7 @@ define reprepro::distribution (
   Optional[String] $suite                  = undef,
   Optional[String] $description            = undef,
   String           $sign_with              = '',
-  String           $codename               = $name,
+  String           $codename               = $title,
   Optional[String] $fakecomponentprefix    = undef,
   String           $udebcomponents         = $components,
   String           $deb_indices            = 'Packages Release .gz .bz2',
@@ -106,13 +106,13 @@ define reprepro::distribution (
   create_resources('::reprepro::pull', $create_pull, $defaults)
   create_resources('::reprepro::filterlist', $create_filterlist, $defaults)
 
-  concat::fragment { "distribution-${name}":
+  concat::fragment { "distribution-${title}":
     target  => "${reprepro::basedir}/${repository}/conf/distributions",
     content => template('reprepro/distribution.erb'),
-    notify  => Exec["export distribution ${name}"],
+    notify  => Exec["export distribution ${title}"],
   }
 
-  exec {"export distribution ${name}":
+  exec {"export distribution ${title}":
     command     => "su -c 'reprepro -b ${reprepro::basedir}/${repository} export ${codename}' ${reprepro::user_name}",
     path        => ['/bin', '/usr/bin'],
     refreshonly => true,
@@ -139,7 +139,7 @@ define reprepro::distribution (
       $command = "${reprepro::homedir}/bin/update-distribution.sh -r ${repository} -c ${codename}"
     }
 
-    cron { "${name} cron":
+    cron { "${title} cron":
       command     => $command,
       user        => $::reprepro::user_name,
       environment => 'SHELL=/bin/bash',

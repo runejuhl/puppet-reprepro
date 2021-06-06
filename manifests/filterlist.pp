@@ -3,7 +3,7 @@
 #
 # Packages list have the same syntax as the output of dpkg --get-selections
 #
-# @param name
+# @param list_name
 #   name of the filter list
 # @param ensure
 #   present/absent, defaults to present
@@ -27,14 +27,15 @@
 #
 define reprepro::filterlist (
   String $repository,
-  Array  $packages = [],
-  String $ensure   = 'present',
+  String $list_name = $title,
+  Array  $packages  = [],
+  String $ensure    = 'present',
 ) {
 
   include reprepro
 
   if (size($packages) > 0) {
-    file {"${reprepro::basedir}/${repository}/conf/${name}-filter-list":
+    file {"${reprepro::basedir}/${repository}/conf/${list_name}-filter-list":
       ensure  => $ensure,
       owner   => 'root',
       group   => $::reprepro::group_name,
@@ -42,7 +43,7 @@ define reprepro::filterlist (
       content => template('reprepro/filterlist.erb'),
     }
   } else {
-    file {"${reprepro::basedir}/${repository}/conf/${name}-filter-list":
+    file {"${reprepro::basedir}/${repository}/conf/${list_name}-filter-list":
       ensure  => $ensure,
       owner   => 'root',
       group   => $::reprepro::group_name,

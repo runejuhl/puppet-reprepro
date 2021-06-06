@@ -1,7 +1,7 @@
 #
 # Adds a packages repository.
 #
-# @param name
+# @param repo_name
 #   the name of the repository
 # @param ensure
 #   present/absent, defaults to present
@@ -30,6 +30,7 @@
 #   }
 #
 define reprepro::repository (
+  String                 $repo_name       = $title,
   String                 $ensure          = 'present',
   String                 $incoming_name   = 'incoming',
   String                 $incoming_dir    = 'incoming',
@@ -54,7 +55,7 @@ define reprepro::repository (
     $directory_ensure = 'directory'
   }
 
-  file { "${reprepro::basedir}/${name}":
+  file { "${reprepro::basedir}/${repo_name}":
     ensure  => $directory_ensure,
     purge   => true,
     recurse => true,
@@ -65,13 +66,13 @@ define reprepro::repository (
   }
 
   file {
-    [ "${reprepro::basedir}/${name}/dists",
-      "${reprepro::basedir}/${name}/pool",
-      "${reprepro::basedir}/${name}/conf",
-      "${reprepro::basedir}/${name}/lists",
-      "${reprepro::basedir}/${name}/db",
-      "${reprepro::basedir}/${name}/logs",
-      "${reprepro::basedir}/${name}/tmp",
+    [ "${reprepro::basedir}/${repo_name}/dists",
+      "${reprepro::basedir}/${repo_name}/pool",
+      "${reprepro::basedir}/${repo_name}/conf",
+      "${reprepro::basedir}/${repo_name}/lists",
+      "${reprepro::basedir}/${repo_name}/db",
+      "${reprepro::basedir}/${repo_name}/logs",
+      "${reprepro::basedir}/${repo_name}/tmp",
     ]:
     ensure => $directory_ensure,
     mode   => '2755',
@@ -79,14 +80,14 @@ define reprepro::repository (
     group  => $reprepro::group_name,
   }
 
-  file { "${reprepro::basedir}/${name}/incoming":
+  file { "${reprepro::basedir}/${repo_name}/incoming":
     ensure => $directory_ensure,
     mode   => '2775',
     owner  => $reprepro::user_name,
     group  => $reprepro::group_name,
   }
 
-  file { "${reprepro::basedir}/${name}/conf/options":
+  file { "${reprepro::basedir}/${repo_name}/conf/options":
     ensure  => $ensure,
     mode    => '0640',
     owner   => $reprepro::user_name,
@@ -94,7 +95,7 @@ define reprepro::repository (
     content => inline_template("<%= @options.join(\"\n\") %>\n"),
   }
 
-  file { "${reprepro::basedir}/${name}/conf/incoming":
+  file { "${reprepro::basedir}/${repo_name}/conf/incoming":
     ensure  => $ensure,
     mode    => '0640',
     owner   => $reprepro::user_name,
@@ -102,7 +103,7 @@ define reprepro::repository (
     content => template('reprepro/incoming.erb'),
   }
 
-  concat { "${reprepro::basedir}/${name}/conf/distributions":
+  concat { "${reprepro::basedir}/${repo_name}/conf/distributions":
     ensure => $ensure,
     owner  => $reprepro::user_name,
     group  => $reprepro::group_name,
@@ -110,33 +111,33 @@ define reprepro::repository (
   }
 
   if $ensure == 'present' {
-    concat::fragment { "00-distributions-${name}":
+    concat::fragment { "00-distributions-${repo_name}":
       content => "# Puppet managed\n",
-      target  => "${reprepro::basedir}/${name}/conf/distributions",
+      target  => "${reprepro::basedir}/${repo_name}/conf/distributions",
     }
-    concat::fragment { "00-update-${name}":
+    concat::fragment { "00-update-${repo_name}":
       content => "# Puppet managed\n",
-      target  => "${reprepro::basedir}/${name}/conf/updates",
+      target  => "${reprepro::basedir}/${repo_name}/conf/updates",
     }
-    concat::fragment { "00-pulls-${name}":
+    concat::fragment { "00-pulls-${repo_name}":
       content => "# Puppet managed\n",
-      target  => "${reprepro::basedir}/${name}/conf/pulls",
+      target  => "${reprepro::basedir}/${repo_name}/conf/pulls",
     }
-    concat::fragment{"update-repositories add repository ${name}":
+    concat::fragment{"update-repositories add repository ${repo_name}":
       target  => "${reprepro::homedir}/bin/update-all-repositories.sh",
-      content => "echo\necho 'updatating ${name}:'\n/usr/bin/reprepro -b ${reprepro::basedir}/${name} --noskipold update\n",
-      order   => "50-${name}",
+      content => "echo\necho 'updatating ${repo_name}:'\n/usr/bin/reprepro -b ${reprepro::basedir}/${repo_name} --noskipold update\n",
+      order   => "50-${repo_name}",
     }
   }
 
-  concat { "${reprepro::basedir}/${name}/conf/updates":
+  concat { "${reprepro::basedir}/${repo_name}/conf/updates":
     ensure => $ensure,
     owner  => $reprepro::user_name,
     group  => $reprepro::group_name,
     mode   => '0640',
   }
 
-  concat {"${reprepro::basedir}/${name}/conf/pulls":
+  concat {"${reprepro::basedir}/${repo_name}/conf/pulls":
     ensure => $ensure,
     owner  => root,
     group  => root,
@@ -145,10 +146,10 @@ define reprepro::repository (
 
 
   if $createsymlinks {
-    exec {"${name}-createsymlinks":
-      command     => "su -c 'reprepro -b ${reprepro::basedir}/${name} --delete createsymlinks' ${reprepro::owner}",
+    exec {"${repo_name}-createsymlinks":
+      command     => "su -c 'reprepro -b ${reprepro::basedir}/${repo_name} --delete createsymlinks' ${reprepro::owner}",
       refreshonly => true,
-      subscribe   => Concat[ "${reprepro::basedir}/${name}/conf/distributions" ];
+      subscribe   => Concat[ "${reprepro::basedir}/${repo_name}/conf/distributions" ];
     }
   }
 
@@ -159,16 +160,16 @@ define reprepro::repository (
     } else {
       $link_ensure = 'link'
     }
-    file {"${documentroot}/${name}":
+    file {"${documentroot}/${repo_name}":
       ensure  => $directory_ensure,
     }
-    file {"${documentroot}/${name}/dists":
+    file {"${documentroot}/${repo_name}/dists":
       ensure => $link_ensure,
-      target => "${reprepro::basedir}/${name}/dists",
+      target => "${reprepro::basedir}/${repo_name}/dists",
     }
-    file {"${documentroot}/${name}/pool":
+    file {"${documentroot}/${repo_name}/pool":
       ensure => $link_ensure,
-      target => "${reprepro::basedir}/${name}/pool",
+      target => "${reprepro::basedir}/${repo_name}/pool",
     }
   }
 
