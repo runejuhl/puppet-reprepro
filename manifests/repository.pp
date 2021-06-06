@@ -22,6 +22,9 @@
 #   documentroot of the webserver (default undef)
 #   if set, softlinks to the reprepro directories are made
 #   the directory $documentroot must already exist
+# @param max_files
+#   maximum number of file resources created for recursion
+#   see puppet file resource, available only on puppet > 7
 #
 # @example
 #   reprepro::repository { 'localpkgs':
@@ -39,6 +42,7 @@ define reprepro::repository (
   Array                  $options         = ['verbose', 'ask-passphrase', 'basedir .'],
   Boolean                $createsymlinks  = false,
   Optional[String]       $documentroot    = undef,
+  Optional[Integer]      $max_files       = undef,
 ) {
 
   include reprepro
@@ -55,14 +59,27 @@ define reprepro::repository (
     $directory_ensure = 'directory'
   }
 
-  file { "${reprepro::basedir}/${repo_name}":
-    ensure  => $directory_ensure,
-    purge   => true,
-    recurse => true,
-    force   => true,
-    mode    => '2755',
-    owner   => $reprepro::user_name,
-    group   => $reprepro::group_name,
+  if $max_files {
+    file { "${reprepro::basedir}/${repo_name}":
+      ensure    => $directory_ensure,
+      purge     => true,
+      recurse   => true,
+      force     => true,
+      mode      => '2755',
+      max_files => $max_files,
+      owner     => $reprepro::user_name,
+      group     => $reprepro::group_name,
+    }
+  } else {
+    file { "${reprepro::basedir}/${repo_name}":
+      ensure  => $directory_ensure,
+      purge   => true,
+      recurse => true,
+      force   => true,
+      mode    => '2755',
+      owner   => $reprepro::user_name,
+      group   => $reprepro::group_name,
+    }
   }
 
   file {

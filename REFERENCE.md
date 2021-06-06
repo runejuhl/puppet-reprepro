@@ -223,9 +223,9 @@ Default value: `''`
 
 Data type: `String`
 
-codename (defaults to $name)
+codename (defaults to $title)
 
-Default value: `$name`
+Default value: `$title`
 
 ##### <a name="fakecomponentprefix"></a>`fakecomponentprefix`
 
@@ -377,14 +377,18 @@ reprepro::filterlist {"lenny-backports":
 
 The following parameters are available in the `reprepro::filterlist` defined type:
 
-* [`name`](#name)
+* [`list_name`](#list_name)
 * [`ensure`](#ensure)
 * [`repository`](#repository)
 * [`packages`](#packages)
 
-##### <a name="name"></a>`name`
+##### <a name="list_name"></a>`list_name`
+
+Data type: `String`
 
 name of the filter list
+
+Default value: `$title`
 
 ##### <a name="ensure"></a>`ensure`
 
@@ -417,25 +421,34 @@ Import a PGP key into the local keyring of the reprepro user
 
 The following parameters are available in the `reprepro::key` defined type:
 
+* [`key_name`](#key_name)
 * [`key_source`](#key_source)
 * [`key_content`](#key_content)
 
-##### <a name="key_source"></a>`key_source`
+##### <a name="key_name"></a>`key_name`
 
 Data type: `String`
+
+name of the key
+
+Default value: `$title`
+
+##### <a name="key_source"></a>`key_source`
+
+Data type: `Optional[String]`
 
 Path to the key in gpg --export format. This is
 used as the source parameter in a puppet File resource.
 
-Default value: `''`
+Default value: ``undef``
 
 ##### <a name="key_content"></a>`key_content`
 
-Data type: `String`
+Data type: `Optional[String]`
 
 define the key content instead of pointing to a source file
 
-Default value: `''`
+Default value: ``undef``
 
 ### <a name="reprepropull"></a>`reprepro::pull`
 
@@ -560,7 +573,7 @@ reprepro::repository { 'localpkgs':
 
 The following parameters are available in the `reprepro::repository` defined type:
 
-* [`name`](#name)
+* [`repo_name`](#repo_name)
 * [`ensure`](#ensure)
 * [`incoming_name`](#incoming_name)
 * [`incoming_dir`](#incoming_dir)
@@ -569,10 +582,15 @@ The following parameters are available in the `reprepro::repository` defined typ
 * [`options`](#options)
 * [`createsymlinks`](#createsymlinks)
 * [`documentroot`](#documentroot)
+* [`max_files`](#max_files)
 
-##### <a name="name"></a>`name`
+##### <a name="repo_name"></a>`repo_name`
+
+Data type: `String`
 
 the name of the repository
+
+Default value: `$title`
 
 ##### <a name="ensure"></a>`ensure`
 
@@ -641,6 +659,15 @@ the directory $documentroot must already exist
 
 Default value: ``undef``
 
+##### <a name="max_files"></a>`max_files`
+
+Data type: `Optional[Integer]`
+
+maximum number of file resources created for recursion
+see puppet file resource, available only on puppet > 7
+
+Default value: ``undef``
+
 ### <a name="repreproupdate"></a>`reprepro::update`
 
 Adds a packages repository.
@@ -662,7 +689,7 @@ reprepro::update {"lenny-backports":
 
 The following parameters are available in the `reprepro::update` defined type:
 
-* [`name`](#name)
+* [`update_name`](#update_name)
 * [`suite`](#suite)
 * [`repository`](#repository)
 * [`url`](#url)
@@ -678,10 +705,14 @@ The following parameters are available in the `reprepro::update` defined type:
 * [`download_lists_as`](#download_lists_as)
 * [`getinrelease`](#getinrelease)
 
-##### <a name="name"></a>`name`
+##### <a name="update_name"></a>`update_name`
+
+Data type: `String`
 
 the name of the update-upstream use in the
 Update field in conf/distributions
+
+Default value: `$title`
 
 ##### <a name="suite"></a>`suite`
 
