@@ -2,10 +2,7 @@ require 'spec_helper'
 
 describe 'reprepro::key' do
   let :default_params do
-    {
-      key_source: '',
-      key_content: '',
-    }
+    {}
   end
 
   shared_examples 'reprepro::key shared examples' do
