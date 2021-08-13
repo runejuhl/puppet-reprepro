@@ -194,7 +194,8 @@ The following parameters are available in the `reprepro::distribution` defined t
 
 Data type: `String`
 
-the name of the distribution
+the name of the repository to attach this
+distribution to.
 
 ##### <a name="origin"></a>`origin`
 

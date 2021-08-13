@@ -2,7 +2,8 @@
 # Adds a "Distribution" to manage.
 #
 # @param repository
-#   the name of the distribution
+#   the name of the repository to attach this
+#   distribution to.
 # @param origin
 #   package origin
 # @param label

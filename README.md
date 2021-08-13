@@ -10,45 +10,63 @@
 
 1. [Overview](#overview)
 1. [Usage](#usage)
+1. [PGP signing](#pgp-signing)
 1. [Reference](#reference)
 1. [Contribuiting](#contributing)
+1. [Authors and Credits](#authors-and-credits)
 
 ## Overview
 
-This module assists with creating a local apt repository.
+This module assists with creating a local apt repository using reprepro.
 
 ## Usage
 
-The only use-case it has been tested with has been to create a repository of pre-built packages. For example, I create a local repository of Puppet 2.7.x packages by downloading them from the official Puppet repository and then adding them to my local repo.
+Supports the followin usecases:
+* create a local repository for uploading packages with dput
+* create a local mirror of a repository (or part of a repository) eg. mirror of puppet packages from Puppetlabs.
 
-A Full Example
---------------
-Using Puppet to create GPG keys is a bit complicated -- for example, the Puppet run could time out before the key is actually made. Because of this, I recommend creating the key manually:
+### Example usage with hiera
 
-```shell
-$ su - reprepro
-$ gpg --gen-key
-
-# Configure as necessary.
-# Note that you will have to maintain reprepro manually if you
-# choose to use a passphrase.
-
-$ gpg --export --armor foo@bar.com > /etc/puppet/modules/reprepro/files/localpkgs.gpg
-
-# Alternatively, you can run the above commands as root and then later
-# copy them to the reprepro user's home directory. This is a way to get
-# around the chicken-and-egg scenario of having to create a key owned
-# by a user that won't exist until after using the reprepro module.
-```
-
-The following is a full-stack example. This will create a reprepro-based repository, configure apache to allow access to the repository via http, and install the repository to your local apt configuration.
-
-Once this is all set up, you can then add packages to `${basedir}/${repository}/tmp/${name}`. reprepro will install packages left in that directory into the repository every 5 minutes via cron.
+This example creates a private repository and start apache to provide the apt repositories.
 
 ```puppet
-# Base Directory shortcut
-$basedir = '/var/lib/apt/repo'
+include reprepro
+include apache::vhosts
+```
 
+```yaml
+reprepro::distributions_defaults:
+  architectures: 'amd64 source'
+  components: 'main'
+  deb_indices: 'Packages Release . .gz .bz2 .xz'
+  dsc_indices: 'Sources Release . .gz .bz2 .xz'
+  # sign_with: '000000KEYID00000'  # see chapter PGP signing
+  install_cron: false
+  not_automatic: 'yes'
+
+# create one or more repositories:
+reprepro::repositories:
+  localpkgs:
+    options:
+      - 'basedir .'
+    distributions:
+      local:
+        origin: 'my-packages'
+        description: 'whatever the description should describe'
+        label: 'my-packages'
+        suite: 'local'
+
+apache::vhosts::vhosts:
+  apt.example.com:
+    port: '80'
+    servername: apt.example.com
+    docroot: '/var/www/apt.example.com'
+```
+
+### Example usage as puppet manifest
+This example creates a private repository and start apache to provide the apt repositories.
+
+```puppet
 # Main reprepro class
 class { 'reprepro':
   basedir => $basedir,
@@ -68,8 +86,9 @@ reprepro::distribution { 'precise':
   architectures => 'amd64 i386',
   components    => 'main contrib non-free',
   description   => 'Package repository for local site maintenance',
-  sign_with     => 'F4D5DAA8',
+  # sign_with   => '000000KEYID00000'  # see chapter PGP signing
   not_automatic => 'No',
+  install_cron  => false,
 }
 
 # Set up apache
@@ -81,29 +100,27 @@ apache::vhost { 'localpkgs':
   docroot        => '/var/lib/apt/repo/localpkgs',
   manage_docroot => false,
   servername     => 'apt.example.com',
-  require        => Reprepro::Distribution['precise'],
-}
-
-# Ensure your public key is accessible to download
-file { '/var/lib/apt/repo/localpkgs/localpkgs.gpg':
-  owner   => 'www-data',
-  group   => 'reprepro',
-  mode    => '0644',
-  source  => 'puppet:///modules/reprepro/localpkgs.gpg',
-  require => Apache::Vhost['localpkgs'],
-}
-
-# Set up an apt repo
-apt::source { 'localpkgs':
-  location    => 'http://apt.example.com',
-  release     => 'precise',
-  repos       => 'main contrib non-free',
-  key         => 'F4D5DAA8',
-  key_source  => 'http://apt.example.com/localpkgs.gpg',
-  require     => File['/var/lib/apt/repo/localpkgs/localpkgs.gpg'],
-  include_src => false,
 }
 ```
+
+## PGP signing
+If you like to use PGP (and you should do that !) to let reprepro sign the contents of your repositories you have to create and install
+the PGP key to use manually. The following shell commands show howto create a PGP key for reprepro:
+
+```shell
+# become the reprepro user:
+$ su - reprepro
+
+# Create a pgp key:
+$ gpg --gen-key --pinentry-mode loopback
+```
+
+Note: if you protect your key with a passphrase, you have to manage packages manually 
+      in order to enter the passphrase.
+
+Note2: --pinentry-mode loopback is needed since we used su to become the reprepro user.
+
+By referencing the key ID with the parameter sign\_with of the distribution resources, reprepro will use the key to sign. 
 
 ## Reference
 All classes and reources are documented in theire respective code file.
@@ -117,7 +134,7 @@ For pull requests, it is very much appreciated to check your Puppet manifest wit
 and the available spec tests in order to follow the recommended Puppet style guidelines
 from the Puppet Labs style guide.
 
-### Authors / Credits
+## Authors and Credits
 
 This module was based off of the existing work done by [saz](https://github.com/saz), [camptocamp](https://github.com/camptocamp)
 and [desc](https://github.com/desc).
