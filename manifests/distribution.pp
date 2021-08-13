@@ -117,10 +117,8 @@ define reprepro::distribution (
     path        => ['/bin', '/usr/bin'],
     refreshonly => true,
     logoutput   => on_failure,
-    require     => [
-      User[$::reprepro::user_name],
-      Reprepro::Repository[$repository]
-    ],
+    require     => Concat["${reprepro::basedir}/${repository}/conf/distributions"],
+    tag         => 'reprepro-distribution',
   }
 
   # Configure system for automatically adding packages

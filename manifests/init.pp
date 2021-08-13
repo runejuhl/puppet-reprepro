@@ -43,6 +43,9 @@ class reprepro (
   Hash    $distributions_defaults = {},
 ) {
 
+  # Dependencies
+  User<| tag=='reprepro-user' |> -> Exec<| tag=='reprepro-distribution' |>
+
   package { $package_name:
     ensure => $package_ensure,
   }
@@ -64,10 +67,11 @@ class reprepro (
       managehome => true,
       system     => true,
       require    => Group[$group_name],
-      notify     => [
+      before     => [
         File["${homedir}/.gnupg"],
         File["${homedir}/bin"],
       ],
+      tag        => 'reprepro-user',
     }
   }
 
