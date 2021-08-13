@@ -14,6 +14,7 @@ describe 'reprepro' do
       repositories_defaults: {},
       package_ensure: 'present',
       package_name: 'reprepro',
+      distributions_defaults: {},
     }
   end
 

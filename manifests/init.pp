@@ -23,6 +23,10 @@
 #   what to ensure for packages
 # @param package_name
 #   name of the package to install
+# @param distributions_defaults
+#   defaults to use for all distributions.
+#   they may got overwritten from the repositories
+#   distribution_defaults
 #
 class reprepro (
   String  $basedir                = '/var/packages',
@@ -36,6 +40,7 @@ class reprepro (
   Hash    $repositories_defaults  = {},
   String  $package_ensure         = 'present',
   String  $package_name           = 'reprepro',
+  Hash    $distributions_defaults = {},
 ) {
 
   package { $package_name:

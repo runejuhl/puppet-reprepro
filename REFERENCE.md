@@ -38,6 +38,7 @@ The following parameters are available in the `reprepro` class:
 * [`repositories_defaults`](#repositories_defaults)
 * [`package_ensure`](#package_ensure)
 * [`package_name`](#package_name)
+* [`distributions_defaults`](#distributions_defaults)
 
 ##### <a name="basedir"></a>`basedir`
 
@@ -126,6 +127,16 @@ Data type: `String`
 name of the package to install
 
 Default value: `'reprepro'`
+
+##### <a name="distributions_defaults"></a>`distributions_defaults`
+
+Data type: `Hash`
+
+defaults to use for all distributions.
+they may got overwritten from the repositories
+distribution_defaults
+
+Default value: `{}`
 
 ## Defined types
 
@@ -601,6 +612,8 @@ The following parameters are available in the `reprepro::repository` defined typ
 * [`createsymlinks`](#createsymlinks)
 * [`documentroot`](#documentroot)
 * [`max_files`](#max_files)
+* [`distributions`](#distributions)
+* [`distributions_defaults`](#distributions_defaults)
 
 ##### <a name="repo_name"></a>`repo_name`
 
@@ -685,6 +698,22 @@ maximum number of file resources created for recursion
 see puppet file resource, available only on puppet > 7
 
 Default value: ``undef``
+
+##### <a name="distributions"></a>`distributions`
+
+Data type: `Hash`
+
+hash to define distributions in this repository
+
+Default value: `{}`
+
+##### <a name="distributions_defaults"></a>`distributions_defaults`
+
+Data type: `Hash`
+
+defaults for all distributions in this repository
+
+Default value: `{}`
 
 ### <a name="repreproupdate"></a>`reprepro::update`
 

@@ -10,6 +10,8 @@ describe 'reprepro::repository' do
       incoming_allow: '',
       options: ['verbose', 'ask-passphrase', 'basedir .'],
       createsymlinks: false,
+      distributions: {},
+      distributions_defaults: {},
     }
   end
 

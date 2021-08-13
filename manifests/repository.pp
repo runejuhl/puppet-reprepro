@@ -25,6 +25,10 @@
 # @param max_files
 #   maximum number of file resources created for recursion
 #   see puppet file resource, available only on puppet > 7
+# @param distributions
+#   hash to define distributions in this repository
+# @param distributions_defaults
+#   defaults for all distributions in this repository
 #
 # @example
 #   reprepro::repository { 'localpkgs':
@@ -33,16 +37,18 @@
 #   }
 #
 define reprepro::repository (
-  String                 $repo_name       = $title,
-  String                 $ensure          = 'present',
-  String                 $incoming_name   = 'incoming',
-  String                 $incoming_dir    = 'incoming',
-  String                 $incoming_tmpdir = 'tmp',
-  Variant[String, Array] $incoming_allow  = '',
-  Array                  $options         = ['verbose', 'ask-passphrase', 'basedir .'],
-  Boolean                $createsymlinks  = false,
-  Optional[String]       $documentroot    = undef,
-  Optional[Integer]      $max_files       = undef,
+  String                 $repo_name              = $title,
+  String                 $ensure                 = 'present',
+  String                 $incoming_name          = 'incoming',
+  String                 $incoming_dir           = 'incoming',
+  String                 $incoming_tmpdir        = 'tmp',
+  Variant[String, Array] $incoming_allow         = '',
+  Array                  $options                = ['verbose', 'ask-passphrase', 'basedir .'],
+  Boolean                $createsymlinks         = false,
+  Optional[String]       $documentroot           = undef,
+  Optional[Integer]      $max_files              = undef,
+  Hash                   $distributions          = {},
+  Hash                   $distributions_defaults = {},
 ) {
 
   include reprepro
@@ -190,4 +196,7 @@ define reprepro::repository (
     }
   }
 
+  create_resources('::reprepro::distribution', $distributions,
+    $distributions_defaults + $reprepro::distributions_defaults + {repository => $repo_name}
+  )
 }
