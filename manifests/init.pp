@@ -15,21 +15,27 @@
 #   hash to create reprepro::key resources.
 # @param key_defaults
 #   hash with defaults for keys creation.
+# @param repositories
+#   hash to create reprepro::repository resources.
+# @param repositories_defaults
+#   hash with defaults for reporitories creation.
 # @param package_ensure
 #   what to ensure for packages
 # @param package_name
 #   name of the package to install
 #
 class reprepro (
-  String  $basedir        = '/var/packages',
-  String  $homedir        = '/var/packages',
-  Boolean $manage_user    = true,
-  String  $user_name      = 'reprepro',
-  String  $group_name     = 'reprepro',
-  Hash    $keys           = {},
-  Hash    $key_defaults   = {},
-  String  $package_ensure = 'present',
-  String  $package_name   = 'reprepro',
+  String  $basedir                = '/var/packages',
+  String  $homedir                = '/var/packages',
+  Boolean $manage_user            = true,
+  String  $user_name              = 'reprepro',
+  String  $group_name             = 'reprepro',
+  Hash    $keys                   = {},
+  Hash    $key_defaults           = {},
+  Hash    $repositories           = {},
+  Hash    $repositories_defaults  = {},
+  String  $package_ensure         = 'present',
+  String  $package_name           = 'reprepro',
 ) {
 
   package { $package_name:
@@ -104,4 +110,5 @@ class reprepro (
   }
 
   create_resources('::reprepro::key', $keys, $key_defaults)
+  create_resources('::reprepro::repository', $repositories, $repositories_defaults)
 }

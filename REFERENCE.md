@@ -34,6 +34,8 @@ The following parameters are available in the `reprepro` class:
 * [`group_name`](#group_name)
 * [`keys`](#keys)
 * [`key_defaults`](#key_defaults)
+* [`repositories`](#repositories)
+* [`repositories_defaults`](#repositories_defaults)
 * [`package_ensure`](#package_ensure)
 * [`package_name`](#package_name)
 
@@ -90,6 +92,22 @@ Default value: `{}`
 Data type: `Hash`
 
 hash with defaults for keys creation.
+
+Default value: `{}`
+
+##### <a name="repositories"></a>`repositories`
+
+Data type: `Hash`
+
+hash to create reprepro::repository resources.
+
+Default value: `{}`
+
+##### <a name="repositories_defaults"></a>`repositories_defaults`
+
+Data type: `Hash`
+
+hash with defaults for reporitories creation.
 
 Default value: `{}`
 

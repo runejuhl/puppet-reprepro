@@ -10,6 +10,8 @@ describe 'reprepro' do
       group_name: 'reprepro',
       keys: {},
       key_defaults: {},
+      repositories: {},
+      repositories_defaults: {},
       package_ensure: 'present',
       package_name: 'reprepro',
     }
