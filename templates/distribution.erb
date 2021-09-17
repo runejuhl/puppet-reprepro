@@ -4,6 +4,9 @@ Origin: <%= @origin %>
 <% if @label -%>
 Label: <%= @label %>
 <% end -%>
+<% if @version -%>
+Version: <= @version %>
+<% end -%>
 <% if @suite -%>
 Suite: <%= @suite %>
 <% end -%>

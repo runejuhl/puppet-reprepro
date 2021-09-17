@@ -4,6 +4,8 @@
 # @param repository
 #   the name of the repository to attach this
 #   distribution to.
+# @param version
+#   distribution version
 # @param origin
 #   package origin
 # @param label
@@ -72,6 +74,7 @@ define reprepro::distribution (
   String           $repository,
   String           $architectures,
   String           $components,
+  Optional[String] $version                = undef,
   Optional[String] $origin                 = undef,
   Optional[String] $label                  = undef,
   Optional[String] $suite                  = undef,
