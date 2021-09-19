@@ -47,8 +47,8 @@ describe 'reprepro' do
         .with_managehome(true)
         .with_system(true)
         .that_requires('Group[' + params[:group_name] + ']')
-        .that_notifies('File[' + params[:homedir] + '/.gnupg]')
-        .that_notifies('File[' + params[:homedir] + '/bin]')
+        .that_comes_before('File[' + params[:homedir] + '/.gnupg]')
+        .that_comes_before('File[' + params[:homedir] + '/bin]')
     }
     it {
       is_expected.to contain_file(params[:homedir] + '/.gnupg')
