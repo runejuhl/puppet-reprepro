@@ -166,6 +166,7 @@ reprepro::distribution {"lenny":
 The following parameters are available in the `reprepro::distribution` defined type:
 
 * [`repository`](#repository)
+* [`version`](#version)
 * [`origin`](#origin)
 * [`label`](#label)
 * [`suite`](#suite)
@@ -196,6 +197,14 @@ Data type: `String`
 
 the name of the repository to attach this
 distribution to.
+
+##### <a name="version"></a>`version`
+
+Data type: `Optional[String]`
+
+distribution version
+
+Default value: ``undef``
 
 ##### <a name="origin"></a>`origin`
 
