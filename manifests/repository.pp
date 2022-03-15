@@ -22,9 +22,6 @@
 #   documentroot of the webserver (default undef)
 #   if set, softlinks to the reprepro directories are made
 #   the directory $documentroot must already exist
-# @param max_files
-#   maximum number of file resources created for recursion
-#   see puppet file resource, available only on puppet > 7
 # @param distributions
 #   hash to define distributions in this repository
 # @param distributions_defaults
@@ -46,7 +43,6 @@ define reprepro::repository (
   Array                  $options                = ['verbose', 'ask-passphrase', 'basedir .'],
   Boolean                $createsymlinks         = false,
   Optional[String]       $documentroot           = undef,
-  Optional[Integer]      $max_files              = undef,
   Hash                   $distributions          = {},
   Hash                   $distributions_defaults = {},
 ) {
@@ -65,26 +61,21 @@ define reprepro::repository (
     $directory_ensure = 'directory'
   }
 
-  if $max_files {
-    file { "${reprepro::basedir}/${repo_name}":
-      ensure    => $directory_ensure,
-      purge     => true,
-      recurse   => true,
-      force     => true,
-      mode      => '2755',
-      max_files => $max_files,
-      owner     => $reprepro::user_name,
-      group     => $reprepro::group_name,
-    }
-  } else {
-    file { "${reprepro::basedir}/${repo_name}":
-      ensure  => $directory_ensure,
-      purge   => true,
-      recurse => true,
-      force   => true,
-      mode    => '2755',
-      owner   => $reprepro::user_name,
-      group   => $reprepro::group_name,
+  case $directory_ensure {
+    'absent': {
+      file { "${reprepro::basedir}/${repo_name}":
+        ensure  => $directory_ensure,
+        purge   => true,
+        recurse => true,
+        force   => true,
+      }    }
+    default: {
+      file { "${reprepro::basedir}/${repo_name}":
+        ensure => $directory_ensure,
+        mode   => '2755',
+        owner  => $reprepro::user_name,
+        group  => $reprepro::group_name,
+      }
     }
   }
 
